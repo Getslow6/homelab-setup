@@ -30,4 +30,13 @@ GIT_SAVEPASSPHRASE=$(whiptail --backtitle "Homelab setup" \
 
 
 # We will generate an SSH key to authenticate with Github
-# ssh-keygen -t ed25519 -C $GIT_MAIL -f $HOME/.ssh/id_rsa
+# -f specifies where the SSH key is stored
+# -N specifies the new passphrase
+# -q makes the execution silent
+# <<<y will answer 'yes' if there is already an SSH key in the target folder
+KEY_LOCATION=$HOME/.ssh/id_ed25519
+ssh-keygen -t ed25519 -C $GIT_MAIL -f $KEY_LOCATION -N $GIT_PASSPHRASE -q <<<y
+if $GIT_SAVEPASSPHRASE; then
+  echo "Adding Passphrase to SSH agent"
+  ssh-add $KEY_LOCATION
+fi
