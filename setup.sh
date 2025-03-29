@@ -1,6 +1,6 @@
 echo ""
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-echo "%%              INSTALLATION SCRIPT              %%"
+echo "%%              LXC SETUP - PART 1               %%"
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
 # Use the Community helper script for Komodo taken from:
