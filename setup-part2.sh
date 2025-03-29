@@ -50,4 +50,9 @@ echo "An SSH key has been generated. This key needs to be added to your Github a
 echo ""
 cat ~/.ssh/id_ed25519.pub
 echo ""
+
+# Clone the github config to the /srv folder
+msg_info "Cloning Git repository"
+git clone $GITHUB_URL /srv
+msg_ok "Cloned Git repository"
                       
