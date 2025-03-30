@@ -40,7 +40,10 @@ if [[ ! -z "$GIT_PASSPHRASE" ]]; then
                             --title "Save SSH key passphrase?" \
                             3>&1 1>&2 2>&3)
   if $GIT_SAVEPASSPHRASE; then
-    echo "Adding Passphrase to SSH agent"
+    # Start an SSH agent
+    eval "$(ssh-agent -s)"
+
+    # Save the SSH key to the agent
     ssh-add $KEY_LOCATION
   fi
 fi
@@ -52,7 +55,7 @@ cat ~/.ssh/id_ed25519.pub
 echo ""
 
 # Clone the github config to the /srv folder
-msg_info "Cloning Git repository"
+echo "Cloning Git repository"
 git clone $GITHUB_URL /srv
-msg_ok "Cloned Git repository"
+echo "Cloned Git repository"
                       
