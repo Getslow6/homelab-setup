@@ -66,7 +66,7 @@ git config --global user.name $GITHUB_USER
 
 # Clone the github config to the /srv folder
 echo "Cloning Git repository"
-git clone https://${GITHUB_USER}:${GITHUB_PAT}@github.com/${GITHUB_REPOSITORY} /srv
+git clone --quiet https://${GITHUB_USER}:${GITHUB_PAT}@github.com/${GITHUB_REPOSITORY} /srv
 git clone $GITHUB_URL /srv
 echo "Cloned Git repository"
 
