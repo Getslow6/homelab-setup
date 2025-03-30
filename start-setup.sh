@@ -23,4 +23,4 @@ done
 echo "Containter has restarted"
 
 # Run additional code inside the just created LXC container
-lxc-attach -n "$CTID" -- bash -c "$(wget -qLO - https://github.com/Getslow6/homelab-setup/raw/main/setup-part2.sh)"
+lxc-attach -n "$CTID" -- bash -c "$(wget -qLO - https://github.com/Getslow6/homelab-setup/raw/main/setup-lxc.sh)"
