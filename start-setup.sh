@@ -5,10 +5,10 @@ echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
 # Use the Community helper script for Komodo taken from:
 # https://community-scripts.github.io/ProxmoxVE/scripts?id=komodo
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/komodo.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/docker.sh)"
 
-# Get the container ID of the container with the name komodo
-CTID=$(pct list | grep komodo | cut -d " " -f 1)
+# Get the container ID of the container with the name 'docker'
+CTID=$(pct list | grep -w docker | cut -d " " -f 1)
 
 # Rename the hostname of the just created container to 'Dockerhost'
 pct set $CTID --hostname dockerhost
