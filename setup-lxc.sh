@@ -78,3 +78,7 @@ git config credential.helper store
 docker network create mqtt
 docker network create proxy
 
+
+# Start Traefik first, followed by Cloudflare
+docker compose -f /srv/applications/traefik/docker-compose.yml up -d
+docker compose -f /srv/applications/cloudflared-proxmox/docker-compose.yml up -d
