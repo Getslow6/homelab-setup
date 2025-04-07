@@ -72,3 +72,9 @@ echo "Cloned Git repository"
 # Make sure that local git uses the already stored credentials
 cd /srv
 git config credential.helper store
+
+
+# Create docker networks that are used
+docker network create mqtt
+docker network create proxy
+
