@@ -33,7 +33,7 @@ GITHUB_PAT=$(whiptail --backtitle "Homelab setup" \
 git config --global credential.helper store
 # Make sure that local git uses the already stored credentials
 git config --global user.email "$GITHUB_USER@proxmox.local"
-git config --global user.name $GITHUB_USER
+git config --global user.name "$GITHUB_USER"
 
 # # We will generate an SSH key to authenticate with Github
 # # -f specifies where the SSH key is stored
