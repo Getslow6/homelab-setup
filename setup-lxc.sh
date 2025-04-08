@@ -1,30 +1,28 @@
+# Function to get user input using whiptail
+get_input() {
+    local prompt="$1"
+    local title="$2"
+    local default="$3"
+    whiptail --backtitle "Homelab setup" --inputbox "\n$prompt" 9 58 "$default" --title "$title" 3>&1 1>&2 2>&3
+}
 
-GITHUB_REPOSITORY=$(whiptail --backtitle "Homelab setup" \
-                             --inputbox "\nEnter your GitHub repository" 9 58 Getslow6/homelab-setup\
-                             --title "GitHub repository" \
-                             3>&1 1>&2 2>&3)
+# Function to display error message and exit
+error_exit() {
+    echo "$1" 1>&2
+    exit 1
+}
 
-GITHUB_USER=$(whiptail --backtitle "Homelab setup" \
-                    --inputbox "\nEnter your GithHub username for committing to Git" 9 58 \
-                    --title "Git Username" \
-                    3>&1 1>&2 2>&3)
-                    
-GITHUB_PAT=$(whiptail --backtitle "Homelab setup" \
-                      --passwordbox "\nEnter your GitHub Personal Access Token (PAT)" 9 58 \
-                      --title "GitHub PAT" \
-                      3>&1 1>&2 2>&3)
+# Function to get user input with a password box
+get_password() {
+    local prompt="$1"
+    local title="$2"
+    whiptail --backtitle "Homelab setup" --passwordbox "\n$prompt" 9 58 --title "$title" 3>&1 1>&2 2>&3
+}
+# Get GitHub repository details from the user
+GITHUB_REPOSITORY=$(get_input    "Enter your GitHub repository"                     "GitHub repository") || error_exit "Failed to get GitHub repository"
+GITHUB_USER=$(      get_input    "Enter your GitHub username for committing to Git" "Git Username")      || error_exit "Failed to get GitHub username"
+GITHUB_PAT=$(       get_password "Enter your GitHub Personal Access Token (PAT)"    "GitHub PAT")        || error_exit "Failed to get GitHub PAT"
 
-
-
-# LOCAL_USER=$(whiptail --backtitle "Homelab setup" \
-#                     --inputbox "\nEnter your Container username for use inside the LXC container" 9 58 \
-#                     --title "Git Username" \
-#                     3>&1 1>&2 2>&3)
-
-# GIT_PASSPHRASE=$(whiptail --backtitle "Homelab setup" \
-#                           --passwordbox "\nEnter a passphrase to secure the SSH key. If you leave it blank, no passphrase will be used." 9 58 \
-#                           --title "SSH key Passphrase" \
-#                           3>&1 1>&2 2>&3)
 
 
 # adduser $USER
@@ -78,7 +76,9 @@ git config credential.helper store
 docker network create mqtt
 docker network create proxy
 
-
 # Start Traefik first, followed by Cloudflare
 docker compose -f /srv/applications/traefik/docker-compose.yml up -d
 docker compose -f /srv/applications/cloudflared-proxmox/docker-compose.yml up -d
+
+
+echo "Setup complete"
