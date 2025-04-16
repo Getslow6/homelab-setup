@@ -75,6 +75,7 @@ git config credential.helper store
 # Create docker networks that are used
 docker network create mqtt
 docker network create proxy
+docker network create authelia
 
 # Start Traefik first, followed by Cloudflare
 docker compose -f /srv/applications/traefik/docker-compose.yml up -d
