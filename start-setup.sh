@@ -6,20 +6,16 @@ echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 # Use the Community helper script for a Docker container based on Alpine:
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/alpine-docker.sh)"
 
-# Get the container ID of the container with the name 'docker'
-CTID=$(pct list | grep -w docker | cut -d " " -f 1)
+# Function to get user input using whiptail
+get_input() {
+    local prompt="$1"
+    local title="$2"
+    local default="$3"
+    whiptail --backtitle "Homelab setup" --inputbox "\n$prompt" 9 58 "$default" --title "$title" 3>&1 1>&2 2>&3
+}
 
-# Rename the hostname of the just created container to 'Dockerhost'
-pct set $CTID --hostname dockerhost
-
-# Reboot to finalise changing the hostname
-pct reboot $CTID
-echo "Rebooting container, waiting for restart..."
-sleep 2
-while [[ "$(pct status "$CTID" | awk '{print $2}')" != "running" ]]; do
-    sleep 2
-done
-echo "Containter has restarted"
+# Get GitHub repository details from the user
+CTID=$(get_input "Enter the container ID of the container you just created" "Container ID") || error_exit "Failed to get Container ID"
 
 # Run additional code inside the just created LXC container
 lxc-attach -n "$CTID" -- bash -c "$(curl -fsSL https://github.com/Getslow6/homelab-setup/raw/main/setup-lxc.sh)"
