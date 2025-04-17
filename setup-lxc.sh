@@ -24,7 +24,7 @@ apk add git -q
 
 # Get GitHub repository details from the user
 GITHUB_REPOSITORY=$(get_input    "Enter your GitHub repository"                     "GitHub repository" "https://github.com/Getslow6/homelab-config") || error_exit "Failed to get GitHub repository"
-GITHUB_USER=$(      get_input    "Enter your GitHub username for committing to Git" "Git Username")     "Getslow6" || error_exit "Failed to get GitHub username"
+GITHUB_USER=$(      get_input    "Enter your GitHub username for committing to Git" "Git Username"      "Getslow6" ) || error_exit "Failed to get GitHub username"
 GITHUB_PAT=$(       get_password "Enter your GitHub Personal Access Token (PAT)"    "GitHub PAT")        || error_exit "Failed to get GitHub PAT"
 
 # adduser $USER
