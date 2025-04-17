@@ -63,9 +63,9 @@ git config --global user.name "$GITHUB_USER"
 # echo ""
 
 # Clone the github config to the /srv folder
-echo "Cloning Git repository"
+echo "▶️ Cloning Git repository"
 git clone --quiet https://${GITHUB_USER}:${GITHUB_PAT}@github.com/${GITHUB_REPOSITORY} /srv
-echo "Cloned Git repository"
+echo "✅ Cloned Git repository"
 
 # Make sure that local git uses the already stored credentials
 cd /srv
@@ -77,9 +77,24 @@ docker network create mqtt
 docker network create proxy
 docker network create authelia
 
-# Start Traefik first, followed by Cloudflare
-docker compose -f /srv/applications/traefik/docker-compose.yml up -d
-docker compose -f /srv/applications/cloudflared-proxmox/docker-compose.yml up -d
+# Containers to start, in sequence
+containers=(
+  "traefik"
+  "cloudflared-proxmox"
+  "dockge"
+)
 
+# Loop through each container and bring it up
+for container in "${containers[@]}"; do
+  compose_file="/srv/applications/$container/docker-compose.yml"
 
-echo "Setup complete"
+  echo "▶️ Starting Docker Compose for: $container"
+
+  if docker compose -f "$compose_file" up -d; then
+    echo "✅ Successfully started: $container"
+  else
+    echo "❌ Failed to start: $container" >&2
+  fi
+done
+
+echo "✅ Setup complete"
