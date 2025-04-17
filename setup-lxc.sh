@@ -23,7 +23,7 @@ get_password() {
 apk add git -q
 
 # Get GitHub repository details from the user
-GITHUB_REPOSITORY=$(get_input    "Enter your GitHub repository"                     "GitHub repository" "https://github.com/Getslow6/homelab-config") || error_exit "Failed to get GitHub repository"
+GITHUB_REPOSITORY=$(get_input    "Enter your GitHub repository"                     "GitHub repository" "Getslow6/homelab-config") || error_exit "Failed to get GitHub repository"
 GITHUB_USER=$(      get_input    "Enter your GitHub username for committing to Git" "Git Username"      "Getslow6" ) || error_exit "Failed to get GitHub username"
 GITHUB_PAT=$(       get_password "Enter your GitHub Personal Access Token (PAT)"    "GitHub PAT")        || error_exit "Failed to get GitHub PAT"
 
@@ -37,7 +37,7 @@ git config --global user.name "$GITHUB_USER"
 
 # Clone the github config to the /srv folder
 echo "▶️ Cloning Git repository"
-git clone --quiet https://${GITHUB_USER}:${GITHUB_PAT}@github.com/${GITHUB_REPOSITORY} /srv
+git clone --quiet https://${GITHUB_USER}:${GITHUB_PAT}@github.com/${GITHUB_REPOSITORY} /srv || error_exit "Failed cloning the repository"
 echo "✅ Cloned Git repository"
 
 # Make sure that local git uses the already stored credentials
