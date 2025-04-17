@@ -3,9 +3,8 @@ echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 echo "%%              LXC SETUP - PART 1               %%"
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
-# Use the Community helper script for Komodo taken from:
-# https://community-scripts.github.io/ProxmoxVE/scripts?id=komodo
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/docker.sh)"
+# Use the Community helper script for a Docker container based on Alpine:
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/alpine-docker.sh)"
 
 # Get the container ID of the container with the name 'docker'
 CTID=$(pct list | grep -w docker | cut -d " " -f 1)
