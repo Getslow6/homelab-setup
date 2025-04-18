@@ -71,7 +71,7 @@ done
 
 SELECTED_CONTAINERS=$(whiptail --title "Select containers to start" --checklist \
 "Choose containers" 37 58 30 \
-"${options[@]}")
+"${options[@]}" 3>&1 1>&2 2>&3)
 
 
 # Convert the quoted string into an array
