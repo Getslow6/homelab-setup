@@ -64,7 +64,7 @@ for container in $containerlist; do
 done
 
 # Show the checklist
-START_CONTAINERS=$(whiptail --title "Select containers to start" --checklist "Choose containers:" 30 58 20 "${options[@]}")
+START_CONTAINERS=$(whiptail --title "Select containers to start" --checklist "Choose containers:" 30 58 20 "Container container ON check check OFF")
 
 
 # Convert the quoted string into an array
