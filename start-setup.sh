@@ -19,7 +19,7 @@ error_exit() {
 CTID_DEFAULT=$(ls -Art  /etc/pve/lxc/ | tail -n 1 | sed 's/\.conf$//')
 
 # Get GitHub repository details from the user
-CTID=$(get_input "Enter the container ID of the container you just created" "Container ID" "$CTID_DEFAULT" ) || error_exit "Failed to get Container ID"
+CTID=$(get_input "Enter the container ID of the container you just created" "Container ID" "$CTID_DEFAULT" )
 
 # Check if CTID is defined and bigger than 0
 if [[ -n "$CTID" && "$CTID" -gt 0 ]]; then
