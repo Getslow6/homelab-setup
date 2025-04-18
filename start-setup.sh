@@ -18,6 +18,3 @@ if [[ -n "$CTID" && "$CTID" -gt 0 ]]; then
 else
     error_exit "Script stopped"
 fi
-
-
-bash -c $(lxc-attach -n 100 -- bash -c "$(curl -fsSL https://github.com/Getslow6/homelab-setup/raw/main/setup-lxc.sh)")
