@@ -69,10 +69,10 @@ done
 # "${options[@]}"
 
 
-SELECTED_CONTAINERS=$(whiptail --title "Select containers to start" --checklist \
+SELECTED_CONTAINERS=$(whiptail --backtitle "Homelab setup" --title "Select containers to start" --checklist \
 "Choose containers" 37 58 30 \
 "${options[@]}" 3>&1 1>&2 2>&3)
-
+clear
 
 # Convert the quoted string into an array
 readarray -t containers <<< "$(echo "$SELECTED_CONTAINERS" | tr -d '"')"
