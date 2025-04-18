@@ -51,32 +51,35 @@ docker network create proxy
 docker network create authelia
 
 
-containerlist=()
-for dir in /srv/applications/*/; do
-  [[ -d "$dir" ]] && containers+=("$(basename "$dir")")
+# Build the containers list from directories
+containerlist=""
+for dir in /srv/applications/*; do
+  [ -d "$dir" ] && containerlist="$containerlist $(basename "$dir")"
 done
 
-containers_on=(
-  "cloudflared-proxmox"
-  "traefik"
-)
+containers_on="\
+ cloudflared-proxmox\
+ traefik\
+" 
 
-# Build the radiolist options
-options=()
-for container in "${containerlist[@]}"; do
-  if [[ " ${containers_on[@]} " =~ " $container " ]]; then
-    options+=("$container" "$container" ON)
+
+# Build the options string for whiptail
+options=""
+for container in $containers; do
+  if echo "$containers_on" | grep -qw "$container"; then
+    options="$options $container $container ON"
   else
-    options+=("$container" "$container" OFF)
+    options="$options $container $container OFF"
   fi
 done
-
 
 # Show the checklist
 choices=$(whiptail --title "Select containers to start" \
   --checklist "Choose containers:" 20 60 10 \
-  "${options[@]}" \
+  "$options" \
   3>&1 1>&2 2>&3)
+echo "CHOICE:"
+echo "$choices"
 
 # Convert the quoted string into an array
 # This safely splits on whitespace while respecting quotes
