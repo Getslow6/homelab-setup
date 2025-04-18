@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Load the self-defined support functions
-source <(curl -fsSL https://github.com/Getslow6/homelab-setup/raw/main/setup.func)
+source <(curl -fsSL https://github.com/Getslow6/homelab-setup/raw/main/setup2.func)
 
 clear
 # Build the containers list from directories
