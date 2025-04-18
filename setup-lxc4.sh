@@ -65,7 +65,7 @@ done
 
 # Show the checklist
 whiptail --title "Check list example" --checklist \
-"Choose user's permissions" 30 78 20 \
+"Choose user's permissions" 35 78 25 \
 "${options[@]}"
 
 
