@@ -75,7 +75,7 @@ clear
 
 echo "$SELECTED_CONTAINERS"
 # Convert the quoted string into an array
-readarray -t containers <<< "$(echo "$SELECTED_CONTAINERS" | tr -d '"')"
+eval "containers=($SELECTED_CONTAINERS)"
 
 echo ""
 
