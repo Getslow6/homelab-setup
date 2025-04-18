@@ -55,8 +55,7 @@ for container in $containerlist; do
 done
 
 # Show the checklist
-
-START_CONTAINERS=$(get_input    "Select containers to start" "Choose containers:" "${options[@]}") || error_exit "Failed to get select startup containers"
+START_CONTAINERS=$(get_checklist "Select containers to start" "Choose containers:" "${options[@]}") || error_exit "Failed to get select startup containers"
 
 
 # Convert the quoted string into an array
