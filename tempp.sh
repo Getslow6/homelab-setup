@@ -27,13 +27,8 @@ done
 
 echo "${options[@]}"
 
-
 # Show the checklist
-title="Select containers to start"
-prompt="Choose containers:"
-list="${options[@]}"
-whiptail --backtitle "Homelab setup" --title "$title" --checklist "\n$prompt" 30 58 20 "$list"
-#START_CONTAINERS=$(get_checklist "Select containers to start" "Choose containers:" "${options[@]}")
+START_CONTAINERS=$(get_checklist "Select containers to start" "Choose containers:" "${options[@]}")
 
 
 # Convert the quoted string into an array
