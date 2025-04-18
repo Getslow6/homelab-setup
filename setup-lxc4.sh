@@ -57,15 +57,15 @@ containers_on="\
 options=()
 for container in $containerlist; do
   if echo "$containers_on" | grep -qw "$container"; then
-    options+=("$container" "$container" "ON")
+    options+=("$container" " " "ON")
   else
-    options+=("$container" "$container" "OFF")
+    options+=("$container" " " "OFF")
   fi
 done
 
 # Show the checklist
 whiptail --title "Check list example" --checklist \
-"Choose user's permissions" 35 78 25 \
+"Choose user's permissions" 35 58 25 \
 "${options[@]}"
 
 
