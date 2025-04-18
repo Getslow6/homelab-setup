@@ -1,23 +1,6 @@
-# Function to get user input using whiptail
-get_input() {
-    local prompt="$1"
-    local title="$2"
-    local default="$3"
-    whiptail --backtitle "Homelab setup" --inputbox "\n$prompt" 9 58 "$default" --title "$title" 3>&1 1>&2 2>&3
-}
 
-# Function to display error message and exit
-error_exit() {
-    echo "$1" 1>&2
-    exit 1
-}
-
-# Function to get user input with a password box
-get_password() {
-    local prompt="$1"
-    local title="$2"
-    whiptail --backtitle "Homelab setup" --passwordbox "\n$prompt" 9 58 --title "$title" 3>&1 1>&2 2>&3
-}
+# Load the self defined support functions
+source <(curl -fsSL https://github.com/Getslow6/homelab-setup/raw/main/setup.func)
 
 # First install Git on Alpine Linux
 apk add git -q
