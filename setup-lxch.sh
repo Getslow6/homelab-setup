@@ -63,31 +63,24 @@ for container in $containerlist; do
   fi
 done
 
-
 # Function to get user input with a checklist box
 SELECTED_CONTAINERS=$(whiptail --backtitle "Homelab setup" --title "Select containers to start" --checklist \
 "Choose containers" 37 58 30 \
 "${options[@]}" 3>&1 1>&2 2>&3)
-
-
-
 clear
 
-echo "$SELECTED_CONTAINERS"
 # Convert the quoted string into an array
 eval "containers=($SELECTED_CONTAINERS)"
-
-echo ""
-
-echo "$containers"
 
 # Loop through each container and bring it up
 for container in "${containers[@]}"; do
   compose_file="/srv/applications/$container/docker-compose.yml"
 
   msg_info "Starting Docker Compose for: $container"
+  docker compose -f "$compose_file" up -d  > /dev/null 2>&1
 
-  if docker compose -f "$compose_file" up -d  > /dev/null; then
+  # Check if the command was successful
+  if [ $? -eq 0 ]; then
     msg_ok "Container '$container' started successfully"
   else
     msg_error "Failed to start: $container"
