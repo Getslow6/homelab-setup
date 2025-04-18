@@ -50,12 +50,37 @@ docker network create mqtt
 docker network create proxy
 docker network create authelia
 
-# Containers to start, in sequence
-containers=(
-  "traefik"
+
+containerlist=()
+for dir in /srv/applications/*/; do
+  [[ -d "$dir" ]] && containers+=("$(basename "$dir")")
+done
+
+containers_on=(
   "cloudflared-proxmox"
-  "dockge"
+  "traefik"
 )
+
+# Build the radiolist options
+options=()
+for container in "${containerlist[@]}"; do
+  if [[ " ${containers_on[@]} " =~ " $container " ]]; then
+    options+=("$container" "$container" ON)
+  else
+    options+=("$container" "$container" OFF)
+  fi
+done
+
+
+# Show the checklist
+choices=$(whiptail --title "Select containers to start" \
+  --checklist "Choose containers:" 20 60 10 \
+  "${options[@]}" \
+  3>&1 1>&2 2>&3)
+
+# Convert the quoted string into an array
+# This safely splits on whitespace while respecting quotes
+read -r -a containers <<< "$choices"
 
 # Loop through each container and bring it up
 for container in "${containers[@]}"; do
