@@ -64,6 +64,14 @@ for container in $containerlist; do
 done
 
 # Show the checklist
+whiptail --title "Check list example" --checklist \
+"Choose user's permissions" 20 78 4 \
+"NET_OUTBOUND" "Allow connections to other hosts" ON \
+"NET_INBOUND" "Allow connections from other hosts" OFF \
+"LOCAL_MOUNT" "Allow mounting of local devices" OFF \
+"REMOTE_MOUNT" "Allow mounting of remote devices" OFF
+
+
 START_CONTAINERS=$(whiptail --title "Select containers to start" --checklist "Choose containers:" 30 58 20 "Container container ON check check OFF")
 
 
