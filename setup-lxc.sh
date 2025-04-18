@@ -29,9 +29,9 @@ cd /srv || error_exit "Failed to change directory to /srv"
 git config credential.helper store
 
 # Create Docker networks
-docker network create mqtt
-docker network create proxy
-docker network create authelia
+docker network create mqtt > /dev/null 2>&1
+docker network create proxy > /dev/null 2>&1
+docker network create authelia > /dev/null 2>&1
 
 # Build the containers list from directories
 containerlist=""
