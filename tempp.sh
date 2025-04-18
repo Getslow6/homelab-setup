@@ -25,10 +25,14 @@ for container in $containerlist; do
   fi
 done
 
+echo "OPTIONS:"
 echo "${options[@]}"
 
 # Show the checklist
 START_CONTAINERS=$(get_checklist "Select containers to start" "Choose containers:" "${options[@]}")
+
+echo "START_CONTAINERS:"
+echo "$START_CONTAINERS"
 
 
 # Convert the quoted string into an array
