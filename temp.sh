@@ -25,6 +25,9 @@ for container in $containerlist; do
   fi
 done
 
+echo "${options[@]}"
+
+
 # Show the checklist
 START_CONTAINERS=$(get_checklist "Select containers to start" "Choose containers:" "${options[@]}")
 
