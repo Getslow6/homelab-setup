@@ -87,7 +87,7 @@ for container in "${containers[@]}"; do
 
   msg_info "Starting Docker Compose for: $container"
 
-  if docker compose -f "$compose_file" up -d; then
+  if docker compose -f "$compose_file" up -d --quiet-pull; then
     msg_ok "Container '$container' started successfully"
   else
     msg_error "Failed to start: $container"
