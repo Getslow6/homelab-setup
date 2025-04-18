@@ -57,7 +57,7 @@ for container in $containerlist; do
 done
 
 # Show the checklist
-START_CONTAINERS=$(get_checklist "Select containers to start" "Choose containers:" "${options[@]}") || error_exit "Failed to get select startup containers"
+START_CONTAINERS=$(whiptail --backtitle "Homelab setup" --title "Select containers to start" --checklist "\nChoose containers:" 30 58 20 "${options[@]}")
 
 
 # Convert the quoted string into an array
