@@ -23,7 +23,8 @@ git config --global user.name "$GITHUB_USER"
 msg_info "Cloning Git repository"
 
 # Ensure folder is empty
-rm -rf /srv/.[!.]* /srv/..?*
+rm -rf /srv/.[!.]* 
+rm -rf /srv/*
 
 git clone --quiet https://${GITHUB_USER}:${GITHUB_PAT}@github.com/${GITHUB_REPOSITORY} /srv || error_exit "Failed cloning the repository"
 msg_ok "Cloned Git repository"
