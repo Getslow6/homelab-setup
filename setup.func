@@ -68,7 +68,7 @@ msg_error() {
   stop_spinner
   local msg="$1"
   printf "\r\e[2K%s %b\n" "${CROSS}" "${RD}${msg}${CL}" >&2
-  log_message "ERROR" "$msg"
+  echo "ERROR: $msg"
 }
 
 

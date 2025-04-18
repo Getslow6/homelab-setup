@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Load the self-defined support functions
-source <(curl -fsSL https://github.com/Getslow6/homelab-setup/raw/main/setup2.func)
+source <(curl -fsSL https://github.com/Getslow6/homelab-setup/raw/main/setup.func)
 
 clear
 # Build the containers list from directories
@@ -29,7 +29,8 @@ echo "OPTIONS:"
 echo "${options[@]}"
 
 # Show the checklist
-START_CONTAINERS=$(get_checklist "Select containers to start" "Choose containers:" "${options[@]}")
+START_CONTAINERS=$(whiptail --backtitle "Homelab setup" --title "Select containers to start" --checklist "\nChoose containers:" 30 58 20 "${options[@]}")
+
 
 echo "START_CONTAINERS:"
 echo "$START_CONTAINERS"
