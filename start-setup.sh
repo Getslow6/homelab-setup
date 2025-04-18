@@ -15,5 +15,10 @@ CTID_DEFAULT=$(ls -Art  /etc/pve/lxc/ | tail -n 1 | sed 's/\.conf$//')
 # Get GitHub repository details from the user
 CTID=$(get_input "Enter the container ID of the container you just created" "Container ID" "$CTID_DEFAULT" ) || error_exit "Failed to get Container ID"
 
-# Run additional code inside the just created LXC container
-lxc-attach -n "$CTID" -- bash -c "$(curl -fsSL https://github.com/Getslow6/homelab-setup/raw/main/setup-lxc.sh)"
+# Check if CTID is defined and bigger than 0
+if [[ -n "$CTID" && "$CTID" -gt 0 ]]; then
+    # Run additional code inside the just created LXC container
+    lxc-attach -n "$CTID" -- bash -c "$(curl -fsSL https://github.com/Getslow6/homelab-setup/raw/main/setup-lxc.sh)"
+else
+    echo "Script stopped"
+fi
