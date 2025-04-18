@@ -69,9 +69,23 @@ done
 # "${options[@]}"
 
 
-SELECTED_CONTAINERS=$(whiptail --backtitle "Homelab setup" --title "Select containers to start" --checklist \
-"Choose containers" 37 58 30 \
-"${options[@]}" 3>&1 1>&2 2>&3)
+# SELECTED_CONTAINERS=$(whiptail --backtitle "Homelab setup" --title "Select containers to start" --checklist \
+# "Choose containers" 37 58 30 \
+# "${options[@]}" 3>&1 1>&2 2>&3)
+# Function to get user input with a checklist box
+get_checklist2() {
+    local prompt="$1"
+    local title="$2"
+    local list="$3"
+    whiptail --backtitle "Homelab setup" --title "$title" --checklist "\n$prompt" 30 58 20 "$list"  3>&1 1>&2 2>&3
+}
+
+
+
+ SELECTED_CONTAINERS=$(get_checklist2 \
+  "Select containers to start" \
+  "Choose containers" \
+  "${options[@]}")
 clear
 
 # Convert the quoted string into an array
