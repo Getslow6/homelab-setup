@@ -64,8 +64,8 @@ for container in $containerlist; do
 done
 
 # Show the checklist
-whiptail --title "Check list example" --checklist \
-"Choose user's permissions" 37 58 30 \
+whiptail --title "Select containers to start" --checklist \
+"Choose containers" 37 58 30 \
 "${options[@]}"
 
 
