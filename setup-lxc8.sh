@@ -64,16 +64,18 @@ for container in $containerlist; do
 done
 
 # Show the checklist
-whiptail --title "Select containers to start" --checklist \
+# whiptail --title "Select containers to start" --checklist \
+# "Choose containers" 37 58 30 \
+# "${options[@]}"
+
+
+SELECTED_CONTAINERS=$(whiptail --title "Select containers to start" --checklist \
 "Choose containers" 37 58 30 \
-"${options[@]}"
-
-
-START_CONTAINERS=$(whiptail --title "Select containers to start" --checklist "Choose containers:" 30 58 20 "Container container ON check check OFF")
+"${options[@]}")
 
 
 # Convert the quoted string into an array
-readarray -t containers <<< "$(echo "$START_CONTAINERS" | tr -d '"')"
+readarray -t containers <<< "$(echo "$SELECTED_CONTAINERS" | tr -d '"')"
 
 # Loop through each container and bring it up
 for container in "${containers[@]}"; do
