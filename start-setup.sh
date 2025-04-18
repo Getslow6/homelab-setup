@@ -9,6 +9,12 @@ get_input() {
     whiptail --backtitle "Homelab setup" --inputbox "\n$prompt" 9 58 "$default" --title "$title" 3>&1 1>&2 2>&3
 }
 
+# Function to display error message and exit
+error_exit() {
+    echo "$1" 1>&2
+    exit 1
+}
+
 # Get the LXC container config file that is edited the last and strip it from .conf
 CTID_DEFAULT=$(ls -Art  /etc/pve/lxc/ | tail -n 1 | sed 's/\.conf$//')
 
@@ -20,5 +26,5 @@ if [[ -n "$CTID" && "$CTID" -gt 0 ]]; then
     # Run additional code inside the just created LXC container
     lxc-attach -n "$CTID" -- bash -c "$(curl -fsSL https://github.com/Getslow6/homelab-setup/raw/main/setup-lxc.sh)"
 else
-    echo "Script stopped"
+    error_exit "Script stopped"
 fi
