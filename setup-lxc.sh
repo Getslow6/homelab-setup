@@ -20,9 +20,9 @@ git config --global user.email "$GITHUB_USER@proxmox.local"
 git config --global user.name "$GITHUB_USER"
 
 # Clone the GitHub config to the /srv folder
-echo "▶️ Cloning Git repository"
+msg_info "Cloning Git repository"
 git clone --quiet https://${GITHUB_USER}:${GITHUB_PAT}@github.com/${GITHUB_REPOSITORY} /srv || error_exit "Failed cloning the repository"
-echo "✅ Cloned Git repository"
+msg_ok "Cloning Git repository"
 
 # Ensure local Git uses the stored credentials
 cd /srv || error_exit "Failed to change directory to /srv"
