@@ -29,6 +29,21 @@ error_exit() {
     exit 1
 }
 
+get_CTID() {
+    # Get the LXC container config file that is edited the last and strip it from .conf
+    local CTID_DEFAULT=$(ls -Art  /etc/pve/lxc/ | tail -n 1 | sed 's/\.conf$//')
+
+    # Get the container ID confirmation from the user, as we cannot be 100% sure
+    CTID=$(get_input "Enter the container ID of the container you just created" "Container ID" "$CTID_DEFAULT")
+    
+    # Check if CTID is defined and bigger than 0
+    if [[ -n "$CTID" && "$CTID" -gt 0 ]]; then
+        echo "$CTID"
+    else
+        error_exit "Script stopped"
+    fi
+}
+
 
 # This function displays an informational message with logging support.
 declare -A MSG_INFO_SHOWN
