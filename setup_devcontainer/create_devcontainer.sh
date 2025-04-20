@@ -1,6 +1,6 @@
 
-# Use the Community helper script for a Docker container based on Debian:
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/docker.sh)"
+# Use the Community helper script for an LXC container based on Debian:
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/debian.sh)"
 
 # Load self defined support functions
 source <(curl -fsSL https://github.com/Getslow6/homelab-setup/raw/main/setup.func)

@@ -6,11 +6,16 @@ source <(curl -fsSL https://github.com/Getslow6/homelab-setup/raw/main/setup.fun
 # Ensure the script stops on errors
 set -e
 
-sudo apt install -y curl git nodejs npm docker.io docker-compose bash unzip gnupg ca-certificates
+# Install required dependencies (based on Chat GPT's suggestion)
+apt install -y curl git nodejs npm bash unzip gnupg ca-certificates
 
-sudo systemctl enable docker
-sudo systemctl start docker
-sudo usermod -aG docker $USER
+# Install Docker
+curl -fsSL https://get.docker.com | sh
+
+# Setup docker to auto start on boot
+systemctl enable docker
+systemctl start docker
+usermod -aG docker $USER
 
 # Make a config file for code-server
 mkdir -p ~/.config/code-server
@@ -26,10 +31,8 @@ GITHUB_REPOSITORY=$(get_input  "Enter your forked Home Assistant repository" "Gi
 git clone "$GITHUB_REPOSITORY" homeassistant-dev
 cd homeassistant-dev
 
-
-sudo systemctl enable --now code-server@$USER
-
-sudo systemctl restart code-server@$USER
+systemctl enable --now code-server@$USER
+systemctl restart code-server@$USER
 
 echo "Setup complete!"
 echo "You can access code-server at http://<your-lxc-ip>:8080"
