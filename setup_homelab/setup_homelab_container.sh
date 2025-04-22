@@ -1,10 +1,10 @@
 #!/bin/bash
 
+# Ensure the script stops on errors
+set -e
+
 # Load the self-defined support functions
 source <(curl -fsSL https://github.com/Getslow6/homelab-setup/raw/main/setup.func)
-
-# First install Git on Alpine Linux
-apk add git -q
 
 # Get GitHub repository details from the user
 GITHUB_REPOSITORY=$(get_input    "Enter your GitHub repository"                     "GitHub repository" "Getslow6/homelab-config") || error_exit "Failed to get GitHub repository"
@@ -76,14 +76,14 @@ eval "containers=($SELECTED_CONTAINERS)"
 for container in "${containers[@]}"; do
   compose_file="/srv/applications/$container/docker-compose.yml"
 
-  msg_info "Starting Docker Compose for: $container"
+  msg_info " Starting Docker Compose for: $container"
   docker compose -f "$compose_file" up -d  > /dev/null 2>&1
 
   # Check if the command was successful
   if [ $? -eq 0 ]; then
-    msg_ok "Container '$container' started successfully"
+    msg_ok " Container '$container' started successfully"
   else
-    msg_error "Failed to start: $container"
+    msg_error " Failed to start: $container"
   fi
 done
 
