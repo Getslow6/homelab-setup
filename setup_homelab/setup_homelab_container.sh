@@ -27,6 +27,11 @@ rm -rf /srv/.[!.]*
 rm -rf /srv/*
 
 git clone --quiet https://${GITHUB_USER}:${GITHUB_PAT}@github.com/${GITHUB_REPOSITORY} /srv || error_exit "Failed cloning the repository"
+
+# Copy the default database for Dockge, as this stores the credentials.
+cp "/srv/applications/dockge/data/dockge.db.configured" "/srv/applications/dockge/data/dockge.db"
+
+
 msg_ok "Cloned Git repository"
 
 # Ensure local Git uses the stored credentials
