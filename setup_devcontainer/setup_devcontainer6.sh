@@ -24,7 +24,7 @@ clear
 
 msg_info "Updating SSH configuration"
 
-echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILRjLJ3x2urLiYccmzDqwAAeCgAHpgdzab8oWXv9u3Ef stijnseuren@MacBook-Air.local' >> /root/.ssh/authorized_keys
+echo "$GITHUB_REPOSITORY" >> /root/.ssh/authorized_keys
 
 msg_ok "Updated SSH configuration"
 
