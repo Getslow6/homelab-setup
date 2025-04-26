@@ -7,7 +7,11 @@ source <(curl -fsSL https://github.com/Getslow6/homelab-setup/raw/main/setup.fun
 set -e
 
 # Install Docker
-curl -fsSL https://get.docker.com | sh
+if ! command -v docker &> /dev/null
+then
+    curl -fsSL https://get.docker.com | sh
+fi
+
 
 # Setup docker to auto start on boot
 systemctl enable docker
