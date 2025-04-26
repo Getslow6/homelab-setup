@@ -18,27 +18,19 @@ systemctl enable docker
 systemctl start docker
 usermod -aG docker $USER
 
+SSH_PUBKEY=$(get_input  "Enter your Public SSH key. You can get it by putting in the terminal: cat ~/.ssh/id_ed25519.pub" "Public key" "") || error_exit "Failed to get GitHub repository"
 GITHUB_REPOSITORY=$(get_input  "Enter your (forked) Home Assistant Github repository" "GitHub repository" "home-assistant/core") || error_exit "Failed to get GitHub repository"
 clear
 
 msg_info "Updating SSH configuration"
 
-SSHD_CONFIG="/etc/ssh/sshd_config"
-
-# Backup the original file first
-cp "$SSHD_CONFIG" "${SSHD_CONFIG}.bak"
-
-# Uncomment and change the PasswordAuthentication line
-sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication no/' "$SSHD_CONFIG"
-
-# Restart SSH service to apply changes
-systemctl restart ssh || service ssh restart
+echo "$SSH_PUBKEY" >> /root/.ssh/authorized_keys
 
 msg_ok "Updated SSH configuration"
 
 
 msg_info "Cloning Git repository"
-
+rm -rf /root/home-assistant
 git clone --quiet --branch master --single-branch --depth 1 https://github.com/${GITHUB_REPOSITORY} home-assistant || error_exit "Failed cloning the repository"
 
 msg_ok "Cloned Git repository"
