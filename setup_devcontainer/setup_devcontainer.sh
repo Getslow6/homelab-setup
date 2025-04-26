@@ -15,7 +15,7 @@ systemctl start docker
 usermod -aG docker $USER
 
 GITHUB_REPOSITORY=$(get_input  "Enter your (forked) Home Assistant Github repository" "GitHub repository" "home-assistant/core") || error_exit "Failed to get GitHub repository"
-git clone --quiet --branch master --single-branch --depth 1 https://github.com/${GITHUB_REPOSITORY} homea-ssistant || error_exit "Failed cloning the repository"
+git clone --quiet --branch master --single-branch --depth 1 https://github.com/${GITHUB_REPOSITORY} home-assistant || error_exit "Failed cloning the repository"
 
 cd homeassistant
 
