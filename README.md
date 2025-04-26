@@ -19,3 +19,9 @@ Setup a home assistant devcontainer using the following script:
 ```
 bash -c "$(curl -fsSL https://github.com/Getslow6/homelab-setup/raw/main/setup_devcontainer/create_devcontainer.sh)"
 ```
+
+## Container setup
+If there is already a container with Docker and Docker compose installed, use this script in the container:
+```
+bash -c "$(curl -fsSL https://github.com/Getslow6/homelab-setup/raw/main/setup_devcontainer/setup_devcontainer.sh)"
+```
