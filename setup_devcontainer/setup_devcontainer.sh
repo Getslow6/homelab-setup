@@ -33,7 +33,7 @@ msg_ok "Updated SSH configuration"
 
 msg_info "Cloning Git repository"
 rm -rf /root/home-assistant
-git clone --quiet --branch master --single-branch --depth 1 https://github.com/${GITHUB_REPOSITORY} home-assistant || error_exit "Failed cloning the repository"
+git clone --quiet --branch dev --single-branch --depth 1 https://github.com/${GITHUB_REPOSITORY} home-assistant || error_exit "Failed cloning the repository"
 
 msg_ok "Cloned Git repository"
 
