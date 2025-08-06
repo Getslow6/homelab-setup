@@ -114,9 +114,9 @@ rm "$TMP_JSON"
 
 msg_ok "Updated devcontainer.json"
 
-msg_info "Update ownership of mounted folder"
-chown -R 1000:1000 /srv/home-assistant
-msg_ok "Updated ownership of mounted folder"
+# msg_info "Update ownership of mounted folder"
+# chown -R 1000:1000 /srv/home-assistant
+# msg_ok "Updated ownership of mounted folder"
 
 # Start the devcontainer
 devcontainer up --workspace-folder /srv/home-assistant
