@@ -79,18 +79,18 @@ msg_ok "Updated SSH configuration"
 
 msg_info "Cloning Home Assistant Core"
 rm -rf /root/home-assistant
-git clone --quiet --single-branch --depth 1 https://github.com/${HA_REPOSITORY} home-assistant || error_exit "Failed cloning the Home Assistant repository"
+git clone --quiet --single-branch --depth 1 https://github.com/${HA_REPOSITORY} /srv/home-assistant || error_exit "Failed cloning the Home Assistant repository"
 
 msg_info "Cloning Custom component"
-git clone --quiet --single-branch --depth 1 https://github.com/${CC_REPOSITORY} ${CC_FOLDER}|| error_exit "Failed cloning the Custom component repository"
+git clone --quiet --single-branch --depth 1 https://github.com/${CC_REPOSITORY} /srv/${CC_FOLDER}|| error_exit "Failed cloning the Custom component repository"
 
 
 msg_info "Updating devcontainer.json with custom component mount"
 
-DEVCONTAINER_JSON="/root/home-assistant/.devcontainer/devcontainer.json"
+DEVCONTAINER_JSON="/srv/home-assistant/.devcontainer/devcontainer.json"
 
 # Define the mount to add
-NEW_MOUNT="source=/root/${CC_FOLDER}/custom_components,target=\${containerWorkspaceFolder}/config/custom_components,type=bind"
+NEW_MOUNT="source=/srv/${CC_FOLDER}/custom_components,target=\${containerWorkspaceFolder}/config/custom_components,type=bind"
 
 # Strip comments and write to temp file
 # This removes lines that start with optional whitespace and then `//`
@@ -112,8 +112,11 @@ rm "$TMP_JSON"
 
 msg_ok "Updated devcontainer.json"
 
+msg_info "Update ownership of mounted folder"
+chown -R 1000:1000 /srv/home-assistant
+
 # Start the devcontainer
-devcontainer up --workspace-folder /root/home-assistant
+devcontainer up --workspace-folder /srv/home-assistant
 
 
 
