@@ -16,7 +16,7 @@ fi
 
 # Install required dependencies for Node.js
 msg_info "Installing required dependencies..."
-apt install -y curl ca-certificates gnupg
+apt install -y curl ca-certificates gnupg > /dev/null 2>&1
 msg_ok "Installed required dependencies"
 
 # Add NodeSource repository for Node.js LTS
