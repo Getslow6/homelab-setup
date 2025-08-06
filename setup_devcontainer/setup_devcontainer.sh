@@ -24,6 +24,9 @@ curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
 echo "Installing Node.js and npm..."
 apt install -y nodejs
 
+# Install latest version of npm
+npm install -g npm
+
 # Confirm Node.js and npm versions
 echo "Node.js version: $(node -v)"
 echo "npm version: $(npm -v)"
