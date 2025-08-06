@@ -9,34 +9,32 @@ set -e
 # Install Docker
 if ! command -v docker &> /dev/null
 then
-    curl -fsSL https://get.docker.com | sh
+    curl -fsSL https://get.docker.com | sh > /dev/null 2>&1
 fi
 
 # Install required dependencies for Node.js
-echo "Installing required dependencies..."
+msg_info "Installing required dependencies..."
 apt install -y curl ca-certificates gnupg
+msg_ok "Installed required dependencies"
 
 # Add NodeSource repository for Node.js LTS
-echo "Adding NodeSource Node.js repository..."
 curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
 
 # Install Node.js and npm
-echo "Installing Node.js and npm..."
-apt install -y nodejs
+msg_info "Installing Node.js..."
+apt install -y nodejs > /dev/null 2>&1
+msg_ok "Node.js version $(node -v) installed"
 
 # Install latest version of npm
-npm install -g npm
-
-# Confirm Node.js and npm versions
-echo "Node.js version: $(node -v)"
-echo "npm version: $(npm -v)"
+msg_info "Installing latest version of NPM..."
+npm install -g npm > /dev/null 2>&1
+msg_ok "NPM version $(npm -v) installed"
 
 # Install Dev Containers CLI globally
-echo "Installing @devcontainers/cli..."
-npm install -g @devcontainers/cli
+msg_info "Installing @devcontainers/cli..."
+npm install -g @devcontainers/cli > /dev/null 2>&1
+msg_ok "Installed devcontainers CLI version: $(devcontainer --version)"
 
-# Confirm installation
-echo "Installed devcontainers CLI version: $(devcontainer --version)"
 
 # # Install code-server
 # curl -fsSL https://code-server.dev/install.sh | sh
@@ -111,6 +109,8 @@ fi
 # Replace original file 
 mv "$TMP_JSON.new" "$DEVCONTAINER_JSON"
 rm "$TMP_JSON"
+
+msg_ok "Updated devcontainer.json"
 
 # Start the devcontainer
 devcontainer up --workspace-folder /root/home-assistant
