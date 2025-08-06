@@ -9,7 +9,9 @@ set -e
 # Install Docker
 if ! command -v docker &> /dev/null
 then
+    msg_info "Installing Docker..."
     curl -fsSL https://get.docker.com | sh > /dev/null 2>&1
+    msg_ok "Docker installed"
 fi
 
 # Install required dependencies for Node.js
@@ -114,13 +116,14 @@ msg_ok "Updated devcontainer.json"
 
 msg_info "Update ownership of mounted folder"
 chown -R 1000:1000 /srv/home-assistant
+msg_ok "Updated ownership of mounted folder"
 
 # Start the devcontainer
 devcontainer up --workspace-folder /srv/home-assistant
 
 
 
-msg_ok "Cloned Git repository"
+msg_ok "Devcontainer is setup"
 
 
 
