@@ -118,6 +118,41 @@ fi
 mv "$TMP_JSON.new" "$DEVCONTAINER_JSON"
 rm "$TMP_JSON"
 
+
+
+msg_info "Adding port 8080 forwarding to devcontainer.json runArgs..."
+
+# Strip comments from JSON
+TMP_JSON=$(mktemp)
+grep -v '^\s*//' "$DEVCONTAINER_JSON" > "$TMP_JSON"
+
+# Check if runArgs exists
+if jq 'has("runArgs")' "$TMP_JSON" | grep -q true; then
+  # Check if "-p" "8081:8081" pair already exists
+  if jq '.runArgs | index("-p")' "$TMP_JSON" | grep -q null; then
+    # No "-p" found, add the pair
+    jq '.runArgs += ["-p", "8081:8081"]' "$TMP_JSON" > "$TMP_JSON.tmp"
+  else
+    # "-p" found, check if "8081:8081" exists right after
+    IDX=$(jq '.runArgs | to_entries | map(select(.value == "-p")) | .[0].key' "$TMP_JSON")
+    NEXT_VAL=$(jq -r ".runArgs[$((IDX+1))]" "$TMP_JSON")
+    if [ "$NEXT_VAL" != "8081:8081" ]; then
+      jq '.runArgs += ["-p", "8081:8081"]' "$TMP_JSON" > "$TMP_JSON.tmp"
+    else
+      cp "$TMP_JSON" "$TMP_JSON.tmp"
+    fi
+  fi
+else
+  # runArgs doesn't exist, add it with the port forwarding args
+  jq '. + {runArgs: ["-p", "8080:8080"]}' "$TMP_JSON" > "$TMP_JSON.tmp"
+fi
+
+mv "$TMP_JSON.tmp" "$DEVCONTAINER_JSON"
+rm "$TMP_JSON"
+
+msg_ok "Added port forwarding to devcontainer.json"
+
+
 msg_ok "Updated devcontainer.json"
 
 msg_info "Update permissions of /srv"
@@ -127,6 +162,30 @@ msg_ok "Updated permissions of /srv"
 # Start the devcontainer
 devcontainer up --workspace-folder /srv/home-assistant
 
+# Get devcontainer name (latest created container)
+DEVCONTAINER_NAME=$(docker ps --format '{{.Names}}' --filter "ancestor=dev_container_autoadded_stage_label" | head -n 1)
+if [ -z "$DEVCONTAINER_NAME" ]; then
+    # fallback: get container running with workdir mounted
+    DEVCONTAINER_NAME=$(docker ps --format '{{.Names}}' | grep home-assistant | head -n 1)
+fi
+
+if [ -z "$DEVCONTAINER_NAME" ]; then
+    error_exit "Could not find devcontainer container name."
+fi
+msg_ok "Detected devcontainer: $DEVCONTAINER_NAME"
+
+# Install code-server inside the devcontainer
+msg_info "Installing code-server inside devcontainer..."
+docker exec -u root "$DEVCONTAINER_NAME" bash -c "curl -fsSL https://code-server.dev/install.sh | sh" > /dev/null 2>&1
+msg_ok "code-server installed inside devcontainer"
+
+# Start code-server in background inside devcontainer
+msg_info "Starting code-server inside devcontainer..."
+docker exec -u root -d "$DEVCONTAINER_NAME" \
+  code-server /workspaces/home-assistant \
+    --bind-addr 0.0.0.0:8081 \
+    --auth none
+msg_ok "code-server started on http://<LXC-IP>:8081 (no auth)"
 
 
 msg_ok "Devcontainer is setup"
