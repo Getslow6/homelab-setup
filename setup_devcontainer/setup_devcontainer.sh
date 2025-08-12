@@ -39,26 +39,26 @@ npm install -g @devcontainers/cli > /dev/null 2>&1
 msg_ok "Installed devcontainers CLI version: $(devcontainer --version)"
 
 
-# # Install code-server
-# curl -fsSL https://code-server.dev/install.sh | sh
+# Install code-server
+curl -fsSL https://code-server.dev/install.sh | sh
 
-# # Define config path
-# CONFIG_FILE="$HOME/.config/code-server/config.yaml"
+# Define config path
+CONFIG_FILE="$HOME/.config/code-server/config.yaml"
 
-# # Create config directory if it doesn't exist
-# mkdir -p "$(dirname "$CONFIG_FILE")"
+# Create config directory if it doesn't exist
+mkdir -p "$(dirname "$CONFIG_FILE")"
 
-# # Set up config with LAN access on port 8080 and no auth
-# cat > "$CONFIG_FILE" <<EOF
-# bind-addr: 0.0.0.0:8080
-# auth: none
-# cert: false
-# working-directory: $HOME
-# EOF
+# Set up config with LAN access on port 8080 and no auth
+cat > "$CONFIG_FILE" <<EOF
+bind-addr: 0.0.0.0:8080
+auth: none
+cert: false
+working-directory: $HOME
+EOF
 
-# # Enable and restart the code-server systemd service
-# sudo systemctl enable --now code-server@$USER
-# sudo systemctl restart code-server@$USER
+# Enable and restart the code-server systemd service
+sudo systemctl enable --now code-server@$USER
+sudo systemctl restart code-server@$USER
 
 
 # Setup docker to auto start on boot
