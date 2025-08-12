@@ -101,10 +101,17 @@ grep -v '^\s*//' "$DEVCONTAINER_JSON" > "$TMP_JSON"
 # Check if "mounts" exists
 if jq 'has("mounts")' "$TMP_JSON" | grep -q true; then
   jq --arg newMount "$NEW_MOUNT" \
-     '.mounts |= if index($newMount) then . else . + [$newMount] end' "$TMP_JSON" > "$TMP_JSON.new"
+     '.mounts |= if index($newMount) then . else . + [$newMount] end' "$TMP_JSON" > "$TMP_JSON.tmp"
 else
   jq --arg newMount "$NEW_MOUNT" \
-     '. + {mounts: [$newMount]}' "$TMP_JSON" > "$TMP_JSON.new"
+     '. + {mounts: [$newMount]}' "$TMP_JSON" > "$TMP_JSON.tmp"
+fi
+
+# Ensure remoteUser is set to "root"
+if jq 'has("remoteUser")' "$TMP_JSON.tmp" | grep -q true; then
+  jq '.remoteUser = "root"' "$TMP_JSON.tmp" > "$TMP_JSON.new"
+else
+  jq '. + {remoteUser: "root"}' "$TMP_JSON.tmp" > "$TMP_JSON.new"
 fi
 
 # Replace original file 
