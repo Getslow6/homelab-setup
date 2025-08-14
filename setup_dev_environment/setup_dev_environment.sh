@@ -30,14 +30,14 @@ git config credential.helper store
 
 BASE_DIR="/srv/applications"
 REPO_URL="https://github.com/Getslow6/homelab-setup/raw/main/setup_dev_environment/applications"
-
 APPS=("code-server" "home-assistant")
 
 # Download all docker compose files and run them
 for APP in "${APPS[@]}"; do
-  mkdir -p "$BASE_DIR/$APP"
-  curl -o "$BASE_DIR/$APP/docker-compose.yml" \
-    "$REPO_URL/$APP/docker-compose.yml"
-  docker compose -f "$BASE_DIR/$APP/docker-compose.yml" up -d
+  msg_info "Setting up $APP"
+  mkdir -p "$BASE_DIR/$APP" >/dev/null 2>&1
+  curl -sSL -o "$BASE_DIR/$APP/docker-compose.yml" \
+    "$REPO_URL/$APP/docker-compose.yml" >/dev/null 2>&1
+  docker compose -f "$BASE_DIR/$APP/docker-compose.yml" up -d 
+  msg_ok "$APP is now running"
 done
-
