@@ -28,7 +28,7 @@ ONBOARDING_KEY="O_default_O"
 read -rp "Onboarding key (from Komodo Core > Settings > Onboarding) [default: $ONBOARDING_KEY]: " ONBOARDING_KEY_INPUT
 ONBOARDING_KEY="${ONBOARDING_KEY_INPUT:-$ONBOARDING_KEY}"
 
-BASE_DIR="/opt/Homelab"
+BASE_DIR="/opt/homelab"
 read -rp "Base directory for Homelab folders [default: $BASE_DIR]: " BASE_DIR_INPUT
 BASE_DIR="${BASE_DIR_INPUT:-$BASE_DIR}"
 
@@ -61,6 +61,10 @@ else
   systemctl enable docker --now
 fi
 
+
+echo "==> Setup Docker networks."
+docker network create proxy > /dev/null 2>&1
+
 # ---- install periphery ----------------------------------------------------
 echo "==> Installing Komodo Periphery..."
 wget -qO- https://raw.githubusercontent.com/moghtech/komodo/main/scripts/setup-periphery.py \
@@ -80,6 +84,6 @@ systemctl status periphery --no-pager || true
 
 echo
 echo "Folders created:"
-echo "  $BASE_DIR/appdata"
-echo "  $BASE_DIR/app"
+echo "  $BASE_DIR/data"
+echo "  $BASE_DIR/repo"
 echo
