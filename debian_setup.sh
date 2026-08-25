@@ -63,7 +63,10 @@ fi
 
 
 echo "==> Setup Docker networks."
-docker network create proxy > /dev/null 2>&1
+NETWORK='proxy'
+if ! docker network inspect $NETWORK >/dev/null 2>&1; then
+    docker network create $NETWORK
+fi
 
 # ---- install periphery ----------------------------------------------------
 echo "==> Installing Komodo Periphery..."
@@ -81,9 +84,3 @@ systemctl enable periphery --now
 echo
 echo "==> Done. Checking service status:"
 systemctl status periphery --no-pager || true
-
-echo
-echo "Folders created:"
-echo "  $BASE_DIR/data"
-echo "  $BASE_DIR/repo"
-echo
