@@ -42,8 +42,8 @@ echo
 
 # ---- update system ------------------------------------------------------
 echo "==> Updating Debian..."
-apt-get update -y
-apt-get upgrade -y
+apt-get update -qq
+apt-get upgrade -y -qq
 
 # ---- create folder structure --------------------------------------------
 echo "==> Creating folder structure under $BASE_DIR..."
