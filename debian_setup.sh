@@ -67,8 +67,7 @@ wget -qO- https://raw.githubusercontent.com/moghtech/komodo/main/scripts/setup-p
   | python3 - \
     --core-address "$CORE_ADDRESS" \
     --connect-as "$CONNECT_AS" \
-    --onboarding-key "$ONBOARDING_KEY" \
-    --force-service-file
+    --onboarding-key "$ONBOARDING_KEY"
 
 # ---- enable and start service -------------------------------------------
 echo "==> Enabling and starting periphery service..."
