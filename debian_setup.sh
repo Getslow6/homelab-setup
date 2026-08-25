@@ -15,25 +15,20 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
-# ---- prompt for missing variables --------------------------------------
-CORE_ADDRESS="${CORE_ADDRESS:-}"
-ONBOARDING_KEY="${ONBOARDING_KEY:-}"
-CONNECT_AS="${CONNECT_AS:-}"
-BASE_DIR="${BASE_DIR:-/opt/Homelab}"
+# ---- default variables --------------------------------------
+CORE_ADDRESS="http://192.168.2.8:9120"
+read -rp "Komodo Core address (e.g. https://core.example.com): " CORE_ADDRESS_INPUT
+CORE_ADDRESS="${CORE_ADDRESS_INPUT:-$CORE_ADDRESS}"
 
-if [[ -z "$CORE_ADDRESS" ]]; then
-  read -rp "Komodo Core address (e.g. https://core.example.com): " CORE_ADDRESS
-fi
+CONNECT_AS="$(hostname)"
+read -rp "Connect-as name [default: $CONNECT_AS]: " CONNECT_AS_INPUT
+CONNECT_AS="${CONNECT_AS_INPUT:-$(hostname)}"
 
-if [[ -z "$ONBOARDING_KEY" ]]; then
-  read -rp "Onboarding key (from Komodo Core > Settings > Onboarding): " ONBOARDING_KEY
-fi
+ONBOARDING_KEY="O_default_O"
+read -rp "Onboarding key (from Komodo Core > Settings > Onboarding) [default: $ONBOARDING_KEY]: " ONBOARDING_KEY_INPUT
+ONBOARDING_KEY="${ONBOARDING_KEY_INPUT:-$ONBOARDING_KEY}"
 
-if [[ -z "$CONNECT_AS" ]]; then
-  read -rp "Connect-as name [default: $(hostname)]: " CONNECT_AS
-  CONNECT_AS="${CONNECT_AS:-$(hostname)}"
-fi
-
+BASE_DIR="/opt/Homelab"
 read -rp "Base directory for Homelab folders [default: $BASE_DIR]: " BASE_DIR_INPUT
 BASE_DIR="${BASE_DIR_INPUT:-$BASE_DIR}"
 
@@ -42,7 +37,7 @@ echo "== Using =="
 echo "Core address:   $CORE_ADDRESS"
 echo "Connect as:     $CONNECT_AS"
 echo "Base directory: $BASE_DIR"
-echo "Onboarding key: ${ONBOARDING_KEY:0:6}... (hidden)"
+echo "Onboarding key: $ONBOARDING_KEY"
 echo
 
 # ---- update system ------------------------------------------------------
@@ -60,22 +55,15 @@ if command -v docker >/dev/null 2>&1; then
   echo "==> Docker already installed, skipping."
 else
   echo "==> Installing Docker (official convenience script)..."
-  curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
+  wget -O /tmp/get-docker.sh https://get.docker.com
   sh /tmp/get-docker.sh
   rm -f /tmp/get-docker.sh
   systemctl enable docker --now
 fi
 
-# ---- add invoking (real) user to docker group ------------------------------
-REAL_USER="${SUDO_USER:-$USER}"
-if [[ -n "$REAL_USER" && "$REAL_USER" != "root" ]]; then
-  usermod -aG docker "$REAL_USER"
-  echo "==> Added $REAL_USER to the docker group (log out/in for it to take effect)."
-fi
-
 # ---- install periphery ----------------------------------------------------
 echo "==> Installing Komodo Periphery..."
-curl -sSL https://raw.githubusercontent.com/moghtech/komodo/main/scripts/setup-periphery.py \
+wget -qO- https://raw.githubusercontent.com/moghtech/komodo/main/scripts/setup-periphery.py \
   | python3 - \
     --core-address "$CORE_ADDRESS" \
     --connect-as "$CONNECT_AS" \
@@ -96,4 +84,3 @@ echo "Folders created:"
 echo "  $BASE_DIR/appdata"
 echo "  $BASE_DIR/app"
 echo
-echo "Check logs with: journalctl -u periphery -f"
